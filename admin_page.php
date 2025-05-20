@@ -18,7 +18,7 @@ if(!isset($admin_id)){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>admin panel</title>
+   <title>Nhân viên cửa hàng</title>
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -51,7 +51,7 @@ if(!isset($admin_id)){
             };
          ?>
          <h3>$<?php echo $total_pendings; ?>/-</h3>
-         <p>total pendings</p>
+         <p>Đang xử lý</p>
       </div>
 
       <div class="box">
@@ -66,7 +66,7 @@ if(!isset($admin_id)){
             };
          ?>
          <h3>$<?php echo $total_completed; ?>/-</h3>
-         <p>completed payments</p>
+         <p>Đã thanh toán</p>
       </div>
 
       <div class="box">
@@ -75,7 +75,7 @@ if(!isset($admin_id)){
             $number_of_orders = mysqli_num_rows($select_orders);
          ?>
          <h3><?php echo $number_of_orders; ?></h3>
-         <p>order placed</p>
+         <p>Đã đặt hàng</p>
       </div>
 
       <div class="box">
@@ -84,7 +84,7 @@ if(!isset($admin_id)){
             $number_of_products = mysqli_num_rows($select_products);
          ?>
          <h3><?php echo $number_of_products; ?></h3>
-         <p>products added</p>
+         <p>Sản phẩm</p>
       </div>
 
       <div class="box">
@@ -93,7 +93,7 @@ if(!isset($admin_id)){
             $number_of_users = mysqli_num_rows($select_users);
          ?>
          <h3><?php echo $number_of_users; ?></h3>
-         <p>normal users</p>
+         <p>Users</p>
       </div>
 
       <div class="box">
@@ -102,7 +102,7 @@ if(!isset($admin_id)){
             $number_of_admins = mysqli_num_rows($select_admins);
          ?>
          <h3><?php echo $number_of_admins; ?></h3>
-         <p>admin users</p>
+         <p>Nhân viên cửa hàng</p>
       </div>
 
       <div class="box">
@@ -111,7 +111,7 @@ if(!isset($admin_id)){
             $number_of_account = mysqli_num_rows($select_account);
          ?>
          <h3><?php echo $number_of_account; ?></h3>
-         <p>total accounts</p>
+         <p>Tổng số tài khoản</p>
       </div>
 
       <div class="box">
@@ -120,7 +120,7 @@ if(!isset($admin_id)){
             $number_of_messages = mysqli_num_rows($select_messages);
          ?>
          <h3><?php echo $number_of_messages; ?></h3>
-         <p>new messages</p>
+         <p>Tim nhắn mới</p>
       </div>
 
    </div>

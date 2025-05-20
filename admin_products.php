@@ -22,19 +22,19 @@ if(isset($_POST['add_product'])){
    $select_product_name = mysqli_query($conn, "SELECT name FROM `products` WHERE name = '$name'") or die('query failed');
 
    if(mysqli_num_rows($select_product_name) > 0){
-      $message[] = 'product name already added';
+      $message[] = 'Sản phẩm đã tồn tại!';
    }else{
       $add_product_query = mysqli_query($conn, "INSERT INTO `products`(name, price, image) VALUES('$name', '$price', '$image')") or die('query failed');
 
       if($add_product_query){
          if($image_size > 2000000){
-            $message[] = 'image size is too large';
+            $message[] = 'Kích thước ảnh quá lớn';
          }else{
             move_uploaded_file($image_tmp_name, $image_folder);
-            $message[] = 'product added successfully!';
+            $message[] = 'Thêm sản phẩm thành công!';
          }
       }else{
-         $message[] = 'product could not be added!';
+         $message[] = 'Không thể thêm!';
       }
    }
 }
@@ -54,25 +54,31 @@ if(isset($_POST['update_product'])){
    $update_name = $_POST['update_name'];
    $update_price = $_POST['update_price'];
 
-   mysqli_query($conn, "UPDATE `products` SET name = '$update_name', price = '$update_price' WHERE id = '$update_p_id'") or die('query failed');
+   // Kiểm tra tên sản phẩm đã tồn tại chưa (trừ sản phẩm đang cập nhật)
+   $check_name_query = mysqli_query($conn, "SELECT id FROM `products` WHERE name = '$update_name' AND id != '$update_p_id'") or die('query failed');
+   if(mysqli_num_rows($check_name_query) > 0){
+      $message[] = 'Sản phẩm đã tồn tại';
+   } else {
+      mysqli_query($conn, "UPDATE `products` SET name = '$update_name', price = '$update_price' WHERE id = '$update_p_id'") or die('query failed');
 
-   $update_image = $_FILES['update_image']['name'];
-   $update_image_tmp_name = $_FILES['update_image']['tmp_name'];
-   $update_image_size = $_FILES['update_image']['size'];
-   $update_folder = 'uploaded_img/'.$update_image;
-   $update_old_image = $_POST['update_old_image'];
+      $update_image = $_FILES['update_image']['name'];
+      $update_image_tmp_name = $_FILES['update_image']['tmp_name'];
+      $update_image_size = $_FILES['update_image']['size'];
+      $update_folder = 'uploaded_img/'.$update_image;
+      $update_old_image = $_POST['update_old_image'];
 
-   if(!empty($update_image)){
-      if($update_image_size > 2000000){
-         $message[] = 'image file size is too large';
-      }else{
-         mysqli_query($conn, "UPDATE `products` SET image = '$update_image' WHERE id = '$update_p_id'") or die('query failed');
-         move_uploaded_file($update_image_tmp_name, $update_folder);
-         unlink('uploaded_img/'.$update_old_image);
+      if(!empty($update_image)){
+         if($update_image_size > 2000000){
+            $message[] = 'Kich thước ảnh quá lớn';
+         }else{
+            mysqli_query($conn, "UPDATE `products` SET image = '$update_image' WHERE id = '$update_p_id'") or die('query failed');
+            move_uploaded_file($update_image_tmp_name, $update_folder);
+            unlink('uploaded_img/'.$update_old_image);
+         }
       }
-   }
 
-   header('location:admin_products.php');
+      header('location:admin_products.php');
+   }
 
 }
 

@@ -36,7 +36,7 @@ if(isset($_POST['add_to_cart'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>search page</title>
+   <title>Tìm kiếm</title>
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -50,7 +50,7 @@ if(isset($_POST['add_to_cart'])){
 <?php include 'header.php'; ?>
 
 <div class="heading">
-   <h3>search page</h3>
+   <h3>Tìm kiếm</h3>
    <p> <a href="home.php">home</a> / search </p>
 </div>
 
@@ -84,10 +84,10 @@ if(isset($_POST['add_to_cart'])){
    <?php
             }
          }else{
-            echo '<p class="empty">no result found!</p>';
+            echo '<p class="empty">Không có cuốn sách nào như mô tả!</p>';
          }
       }else{
-         echo '<p class="empty">search something!</p>';
+         echo '<p class="empty">Tìm kiếm gì đó!</p>';
       }
    ?>
    </div>
