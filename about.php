@@ -32,7 +32,7 @@ if(!isset($user_id)){
 <?php include 'header.php'; ?>
 
 <div class="heading">
-   <h3>about us</h3>
+   <h3>Giới thiệu</h3>
    <p> <a href="home.php">home</a> / about </p>
 </div>
 
@@ -45,10 +45,10 @@ if(!isset($user_id)){
       </div>
 
       <div class="content">
-         <h3>why choose us?</h3>
-         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet voluptatibus aut hic molestias, reiciendis natus fuga, cumque excepturi veniam ratione iure. Excepturi fugiat placeat iusto facere id officia assumenda temporibus?</p>
-         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quos enim minima ipsa dicta officia corporis ratione saepe sed adipisci?</p>
-         <a href="contact.php" class="btn">contact us</a>
+         <h3>tại sao lại chọn chúng tôi?</h3>
+          <p>Chúng tôi cam kết cung cấp những cuốn sách chất lượng với giá cả hợp lý, đáp ứng mọi nhu cầu đọc sách của bạn. Đội ngũ nhân viên tận tâm luôn sẵn sàng hỗ trợ và tư vấn để bạn lựa chọn được sản phẩm phù hợp nhất.</p>
+          <p>Hệ thống cửa hàng hiện đại, dịch vụ giao hàng nhanh chóng và nhiều chương trình ưu đãi hấp dẫn giúp bạn có trải nghiệm mua sắm tiện lợi, an toàn và hài lòng tuyệt đối.</p>
+         <a href="contact.php" class="btn">Liên hệ</a>
       </div>
 
    </div>
@@ -57,7 +57,7 @@ if(!isset($user_id)){
 
 <section class="reviews">
 
-   <h1 class="title">client's reviews</h1>
+   <h1 class="title">Phản hồi từ khách hàng</h1>
 
    <div class="box-container">
 
@@ -145,7 +145,7 @@ if(!isset($user_id)){
 
 <section class="authors">
 
-   <h1 class="title">greate authors</h1>
+   <h1 class="title">Tác giả xuất sắc</h1>
 
    <div class="box-container">
 
