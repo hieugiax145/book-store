@@ -18,11 +18,12 @@ if(isset($message)){
       <a href="admin_page.php" class="logo">Admin</a>
 
       <nav class="navbar">
-         <a href="admin_page.php">Home</a>
-         <a href="admin_products.php">Sản phẩm</a>
+         <!-- <a href="admin_page.php">Home</a> -->
+         <a href="admin_sell.php">Bán hàng</a>
+         <a href="admin_products.php">Sách</a>
          <a href="admin_orders.php">Đơn hàng</a>
-         <a href="admin_users.php">Users</a>
-         <a href="admin_contacts.php">Phản hồi</a>
+         <!-- <a href="admin_users.php">Users</a> -->
+         <!-- <a href="admin_contacts.php">Phản hồi</a> -->
       </nav>
 
       <div class="icons">

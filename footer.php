@@ -36,6 +36,6 @@
 
    </div>
 
-   <p class="credit"> &copy; Thiết kế  @ <?php echo date('Y'); ?> bởi <span>Nhóm 4</span> </p>
+   <p class="credit"> &copy; Thiết kế  @ <?php echo date('Y'); ?> bởi <span>Nhóm 7</span> </p>
 
 </section>

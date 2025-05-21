@@ -4,28 +4,23 @@ include 'config.php';
 
 session_start();
 
-$user_id = $_SESSION['user_id'];
-
-if(!isset($user_id)){
-   header('location:login.php');
-}
-
 if(isset($_POST['add_to_cart'])){
+   if(!isset($_SESSION['user_id'])){
+      header('location:login.php');
+      exit();
+   }
 
-   $product_name = $_POST['product_name'];
-   $product_price = $_POST['product_price'];
-   $product_image = $_POST['product_image'];
-   $product_quantity = $_POST['product_quantity'];
+   $sachId = $_POST['sachId'];
+   $soLuong = $_POST['soLuong'];
 
-   $check_cart_numbers = mysqli_query($conn, "SELECT * FROM `cart` WHERE name = '$product_name' AND user_id = '$user_id'") or die('query failed');
+   $check_cart_numbers = mysqli_query($conn, "SELECT * FROM `cart` WHERE sachId = '$sachId' AND khachHangId = '{$_SESSION['user_id']}'") or die('query failed');
 
    if(mysqli_num_rows($check_cart_numbers) > 0){
       $message[] = 'already added to cart!';
    }else{
-      mysqli_query($conn, "INSERT INTO `cart`(user_id, name, price, quantity, image) VALUES('$user_id', '$product_name', '$product_price', '$product_quantity', '$product_image')") or die('query failed');
+      mysqli_query($conn, "INSERT INTO `cart`(khachHangId, sachId, soLuong) VALUES('{$_SESSION['user_id']}', '$sachId', '$soLuong')") or die('query failed');
       $message[] = 'product added to cart!';
    }
-
 }
 
 ?>
@@ -52,44 +47,43 @@ if(isset($_POST['add_to_cart'])){
 <section class="home">
 
    <div class="content">
-      <h3>Hand Picked Book to your door.</h3>
+      <h3>Sách được chọn lọc đến tận tay bạn.</h3>
       <p>Chào mừng bạn đến với Cửa hàng bán sách của chúng tôi! Tại đây, bạn sẽ tìm thấy những cuốn sách được chọn lọc kỹ lưỡng, đa dạng thể loại, phù hợp với mọi lứa tuổi và sở thích. Chúng tôi cam kết mang đến cho bạn trải nghiệm mua sắm tiện lợi, nhanh chóng cùng dịch vụ chăm sóc khách hàng tận tâm.</p>
-      <a href="about.php" class="white-btn">discover more</a>
+      <a href="about.php" class="white-btn">Khám phá thêm</a>
    </div>
 
 </section>
 
 <section class="products">
 
-   <h1 class="title">Mới nhất</h1>
+   <h1 class="title">Sách mới nhất</h1>
 
    <div class="box-container">
 
       <?php  
-         $select_products = mysqli_query($conn, "SELECT * FROM `products` LIMIT 6") or die('query failed');
+         $select_products = mysqli_query($conn, "SELECT * FROM `sach` ORDER BY sachId DESC LIMIT 6") or die('query failed');
          if(mysqli_num_rows($select_products) > 0){
             while($fetch_products = mysqli_fetch_assoc($select_products)){
       ?>
      <form action="" method="post" class="box">
-      <img class="image" src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="">
-      <div class="name"><?php echo $fetch_products['name']; ?></div>
-      <div class="price">$<?php echo $fetch_products['price']; ?>/-</div>
-      <!-- <input type="number" min="1" name="product_quantity" value="1" class="qty"> -->
-      <input type="hidden" name="product_name" value="<?php echo $fetch_products['name']; ?>">
-      <input type="hidden" name="product_price" value="<?php echo $fetch_products['price']; ?>">
-      <input type="hidden" name="product_image" value="<?php echo $fetch_products['image']; ?>">
-      <!-- <input type="submit" value="add to cart" name="add_to_cart" class="btn"> -->
+      <img class="image" src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="" style="object-fit: cover; height: 30rem; width: 100%;">
+      <div class="name"><?php echo $fetch_products['ten']; ?></div>
+      <div class="author"><?php echo $fetch_products['tacGia']; ?></div>
+      <div class="price">$<?php echo $fetch_products['donGia']; ?>/-</div>
+      <input type="number" min="1" name="soLuong" value="1" class="qty">
+      <input type="hidden" name="sachId" value="<?php echo $fetch_products['sachId']; ?>">
+      <input type="submit" value="add to cart" name="add_to_cart" class="btn">
      </form>
       <?php
          }
       }else{
-         echo '<p class="empty">no products added yet!</p>';
+         echo '<p class="empty">Chưa có sản phẩm nào!</p>';
       }
       ?>
    </div>
 
    <div class="load-more" style="margin-top: 2rem; text-align:center">
-      <a href="shop.php" class="option-btn">Tải thêm</a>
+      <a href="shop.php" class="option-btn">Xem thêm</a>
    </div>
 
 </section>
@@ -104,7 +98,7 @@ if(isset($_POST['add_to_cart'])){
 
       <div class="content">
          <h3>Giới thiệu</h3>
-         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quos enim minima ipsa dicta officia corporis ratione saepe sed adipisci?</p>
+         <p>Chào mừng bạn đến với cửa hàng sách của chúng tôi! Chúng tôi tự hào mang đến cho bạn những cuốn sách chất lượng, đa dạng thể loại và luôn cập nhật những đầu sách mới nhất. Với đội ngũ nhân viên nhiệt tình và dịch vụ chăm sóc khách hàng chu đáo, chúng tôi cam kết mang đến cho bạn trải nghiệm mua sắm tuyệt vời nhất.</p>
          <a href="about.php" class="btn">Đọc thêm</a>
       </div>
 
@@ -115,9 +109,9 @@ if(isset($_POST['add_to_cart'])){
 <section class="home-contact">
 
    <div class="content">
-      <h3>have any questions?</h3>
+      <h3>Bạn có câu hỏi?</h3>
       <p>Chào mừng bạn đến với Cửa hàng bán sách của chúng tôi! Tại đây chúng tôi cam kết mang đến cho bạn trải nghiệm mua sắm tiện lợi, nhanh chóng cùng dịch vụ chăm sóc khách hàng tận tâm.</p>
-      <a href="contact.php" class="white-btn">Kết nối với chúng tôi</a>
+      <a href="contact.php" class="white-btn">Liên hệ với chúng tôi</a>
    </div>
 
 </section>

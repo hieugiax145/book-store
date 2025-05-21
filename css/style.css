@@ -709,6 +709,16 @@ section{
    border-radius: .5rem;
 }
 
+.shopping-cart .book-items{
+   max-width: 1200px;
+   margin:0 auto;
+   border:var(--border);
+   padding:2rem;
+   text-align: center;
+   margin-top: 2rem;
+   border-radius: .5rem;
+}
+
 .shopping-cart .cart-total p{
    font-size: 2.5rem;
    color:var(--light-color);

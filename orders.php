@@ -43,21 +43,27 @@ if(!isset($user_id)){
    <div class="box-container">
 
       <?php
-         $order_query = mysqli_query($conn, "SELECT * FROM `orders` WHERE user_id = '$user_id'") or die('query failed');
+         $order_query = mysqli_query($conn, "SELECT dh.*, nd.hoTen, nd.email, nd.sdt 
+            FROM don_hang dh 
+            JOIN nguoi_dung nd ON dh.khachHangId = nd.nguoiDungId 
+            WHERE dh.khachHangId = '$user_id'") or die('query failed');
          if(mysqli_num_rows($order_query) > 0){
             while($fetch_orders = mysqli_fetch_assoc($order_query)){
       ?>
       <div class="box">
-         <p> Thời gian đặt : <span><?php echo $fetch_orders['placed_on']; ?></span> </p>
-         <p> Tên người nhận : <span><?php echo $fetch_orders['name']; ?></span> </p>
-         <p> Số điện thoại : <span><?php echo $fetch_orders['number']; ?></span> </p>
+         <p> Ngày đặt hàng : <span><?php echo $fetch_orders['ngayBan']; ?></span> </p>
+         <p> Tên khách hàng : <span><?php echo $fetch_orders['hoTen']; ?></span> </p>
+         <p> Số điện thoại : <span><?php echo $fetch_orders['sdt']; ?></span> </p>
          <p> Email : <span><?php echo $fetch_orders['email']; ?></span> </p>
-         <p> Địa chỉ : <span><?php echo $fetch_orders['address']; ?></span> </p>
-         <p> Phương thức thanh toán : <span><?php echo $fetch_orders['method']; ?></span> </p>
-         <p> Thông tin đơn hàng : <span><?php echo $fetch_orders['total_products']; ?></span> </p>
-         <p> Tổng tiền : <span>$<?php echo $fetch_orders['total_price']; ?>/-</span> </p>
-         <p> Tình trạng : <span style="color:<?php if($fetch_orders['payment_status'] == 'pending'){ echo 'red'; }else{ echo 'green'; } ?>;"><?php echo $fetch_orders['payment_status']; ?></span> </p>
-         </div>
+         <p> Địa chỉ nhận hàng : <span><?php echo $fetch_orders['diaChiNhanHang']; ?></span> </p>
+         <p> Hình thức thanh toán : <span><?php echo $fetch_orders['hinhThucThanhToan']; ?></span> </p>
+         <p> Phân loại : <span><?php echo $fetch_orders['phanLoai']; ?></span> </p>
+         <p> Tổng tiền : <span>$<?php echo $fetch_orders['tongTien']; ?>/-</span> </p>
+         <p> Trạng thái : <span style="color:<?php if($fetch_orders['trangThai'] == 'Pending'){ echo 'red'; }else{ echo 'green'; } ?>;"><?php echo $fetch_orders['trangThai']; ?></span> </p>
+         <?php if(!empty($fetch_orders['ghiChu'])): ?>
+         <p> Ghi chú : <span><?php echo $fetch_orders['ghiChu']; ?></span> </p>
+         <?php endif; ?>
+      </div>
       <?php
        }
       }else{
@@ -67,13 +73,6 @@ if(!isset($user_id)){
    </div>
 
 </section>
-
-
-
-
-
-
-
 
 <?php include 'footer.php'; ?>
 

@@ -4,28 +4,24 @@ include 'config.php';
 
 session_start();
 
-$user_id = $_SESSION['user_id'];
-
-if(!isset($user_id)){
-   header('location:login.php');
-};
-
 if(isset($_POST['add_to_cart'])){
-
-   $product_name = $_POST['product_name'];
-   $product_price = $_POST['product_price'];
-   $product_image = $_POST['product_image'];
-   $product_quantity = $_POST['product_quantity'];
-
-   $check_cart_numbers = mysqli_query($conn, "SELECT * FROM `cart` WHERE name = '$product_name' AND user_id = '$user_id'") or die('query failed');
-
-   if(mysqli_num_rows($check_cart_numbers) > 0){
-      $message[] = 'already added to cart!';
-   }else{
-      mysqli_query($conn, "INSERT INTO `cart`(user_id, name, price, quantity, image) VALUES('$user_id', '$product_name', '$product_price', '$product_quantity', '$product_image')") or die('query failed');
-      $message[] = 'product added to cart!';
+   if(!isset($_SESSION['user_id'])){
+      header('location:login.php');
+      exit();
    }
 
+   $khachHangId = $_SESSION['user_id'];
+   $sachId = $_POST['sach_id'];
+   $soLuong = $_POST['soLuong'];
+
+   $check_cart_numbers = mysqli_query($conn, "SELECT * FROM `cart` WHERE sachId = '$sachId' AND khachHangId = '$khachHangId'") or die('query failed');
+
+   if(mysqli_num_rows($check_cart_numbers) > 0){
+      $message[] = 'Sách đã có trong giỏ hàng!';
+   }else{
+      mysqli_query($conn, "INSERT INTO `cart`(khachHangId, sachId, soLuong) VALUES('$khachHangId', '$sachId', '$soLuong')") or die('query failed');
+      $message[] = 'Đã thêm sách vào giỏ hàng!';
+   }
 };
 
 ?>
@@ -36,7 +32,7 @@ if(isset($_POST['add_to_cart'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Tìm kiếm</title>
+   <title>Tìm kiếm sách</title>
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -50,14 +46,14 @@ if(isset($_POST['add_to_cart'])){
 <?php include 'header.php'; ?>
 
 <div class="heading">
-   <h3>Tìm kiếm</h3>
-   <p> <a href="home.php">home</a> / search </p>
+   <h3>Tìm kiếm sách</h3>
+   <p> <a href="home.php">Trang chủ</a> / Tìm kiếm </p>
 </div>
 
 <section class="search-form">
    <form action="" method="post">
-      <input type="text" name="search" placeholder="search products..." class="box">
-      <input type="submit" name="submit" value="search" class="btn">
+      <input type="text" name="search" placeholder="Tìm kiếm sách..." class="box">
+      <input type="submit" name="submit" value="Tìm kiếm" class="btn">
    </form>
 </section>
 
@@ -67,41 +63,35 @@ if(isset($_POST['add_to_cart'])){
    <?php
       if(isset($_POST['submit'])){
          $search_item = $_POST['search'];
-         $select_products = mysqli_query($conn, "SELECT * FROM `products` WHERE name LIKE '%{$search_item}%'") or die('query failed');
+         $select_products = mysqli_query($conn, "SELECT * FROM `sach` WHERE ten LIKE '%{$search_item}%' OR tacGia LIKE '%{$search_item}%' OR nhaXuatBan LIKE '%{$search_item}%'") or die('query failed');
          if(mysqli_num_rows($select_products) > 0){
          while($fetch_product = mysqli_fetch_assoc($select_products)){
    ?>
    <form action="" method="post" class="box">
-      <img src="uploaded_img/<?php echo $fetch_product['image']; ?>" alt="" class="image">
-      <div class="name"><?php echo $fetch_product['name']; ?></div>
-      <div class="price">$<?php echo $fetch_product['price']; ?>/-</div>
-      <input type="number"  class="qty" name="product_quantity" min="1" value="1">
-      <input type="hidden" name="product_name" value="<?php echo $fetch_product['name']; ?>">
-      <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
-      <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
-      <input type="submit" class="btn" value="add to cart" name="add_to_cart">
+      <img src="uploaded_img/<?php echo $fetch_product['image']; ?>" alt="" class="image" style="object-fit: cover; height: 30rem; width: 100%;">
+      <div class="name"><?php echo $fetch_product['ten']; ?></div>
+      <div class="author">Tác giả: <?php echo $fetch_product['tacGia']; ?></div>
+      <div class="publisher">NXB: <?php echo $fetch_product['nhaXuatBan']; ?></div>
+      <div class="price"><?php echo number_format($fetch_product['donGia'], 0, ',', '.'); ?> VNĐ</div>
+      <input type="number" class="qty" name="soLuong" min="1" max="<?php echo $fetch_product['soLuong']; ?>" value="1">
+      <input type="hidden" name="sach_id" value="<?php echo $fetch_product['sachId']; ?>">
+      <input type="hidden" name="ten" value="<?php echo $fetch_product['ten']; ?>">
+      <input type="hidden" name="donGia" value="<?php echo $fetch_product['donGia']; ?>">
+      <input type="hidden" name="image" value="<?php echo $fetch_product['image']; ?>">
+      <input type="submit" class="btn" value="Thêm vào giỏ" name="add_to_cart">
    </form>
    <?php
             }
          }else{
-            echo '<p class="empty">Không có cuốn sách nào như mô tả!</p>';
+            echo '<p class="empty">Không tìm thấy sách phù hợp!</p>';
          }
       }else{
-         echo '<p class="empty">Tìm kiếm gì đó!</p>';
+         echo '<p class="empty">Vui lòng nhập từ khóa tìm kiếm!</p>';
       }
    ?>
    </div>
-  
 
 </section>
-
-
-
-
-
-
-
-
 
 <?php include 'footer.php'; ?>
 

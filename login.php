@@ -6,32 +6,39 @@ session_start();
 if(isset($_POST['submit'])){
 
    $email = mysqli_real_escape_string($conn, $_POST['email']);
-   $pass = mysqli_real_escape_string($conn, md5($_POST['password']));
+   $pass = mysqli_real_escape_string($conn, $_POST['password']);
 
-   $select_users = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email' AND password = '$pass'") or die('query failed');
+   $select_users = mysqli_query($conn, "SELECT * FROM `nguoi_dung` WHERE email = '$email'") or die('query failed');
 
    if(mysqli_num_rows($select_users) > 0){
 
       $row = mysqli_fetch_assoc($select_users);
+      
+      // Verify password using password_verify
+      if(password_verify($pass, $row['password'])){
 
-      if($row['user_type'] == 'admin'){
+         if($row['vaiTro'] == 'admin'){
 
-         $_SESSION['admin_name'] = $row['name'];
-         $_SESSION['admin_email'] = $row['email'];
-         $_SESSION['admin_id'] = $row['id'];
-         header('location:admin_page.php');
+            $_SESSION['admin_name'] = $row['hoTen'];
+            $_SESSION['admin_email'] = $row['email'];
+            $_SESSION['admin_id'] = $row['nguoiDungId'];
+            header('location:admin_page.php');
 
-      }elseif($row['user_type'] == 'user'){
+         }elseif($row['vaiTro'] == 'customer'){
 
-         $_SESSION['user_name'] = $row['name'];
-         $_SESSION['user_email'] = $row['email'];
-         $_SESSION['user_id'] = $row['id'];
-         header('location:home.php');
+            $_SESSION['user_name'] = $row['hoTen'];
+            $_SESSION['user_email'] = $row['email'];
+            $_SESSION['user_id'] = $row['nguoiDungId'];
+            header('location:home.php');
 
+         }
+
+      }else{
+         $message[] = 'Sai mật khẩu!';
       }
 
    }else{
-      $message[] = 'Sai thông tin đăng nhập!';
+      $message[] = 'Email không tồn tại!';
    }
 
 }
@@ -72,8 +79,8 @@ if(isset($message)){
 
    <form action="" method="post">
       <h3>Đăng nhập ngay</h3>
-      <input type="email" name="email" placeholder="enter your email" required class="box">
-      <input type="password" name="password" placeholder="enter your password" required class="box">
+      <input type="email" name="email" placeholder="Nhập email của bạn" required class="box">
+      <input type="password" name="password" placeholder="Nhập mật khẩu của bạn" required class="box">
       <input type="submit" name="submit" value="Đăng nhập" class="btn">
       <p>Bạn chưa có tài khoản? <a href="register.php">Đăng kí ngay</a></p>
    </form>
